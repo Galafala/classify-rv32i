@@ -23,14 +23,30 @@
 # =================================================================
 argmax:
     li t6, 1
-    blt a1, t6, handle_error
+    blt a1, t6, handle_error # check if the array length >= 1
 
-    lw t0, 0(a0)
+    lw t0, 0(a0) # load the first value to t0
 
-    li t1, 0
-    li t2, 1
+    li t1, 0 # current index
+    li t2, 0 # greatest index
+
 loop_start:
     # TODO: Add your own implementation
+    addi t1, t1, 1 # i++
+    bge t1, a1, done # check if i < the array length
+    addi a0, a0, 4 # move array pointer forward
+    lw t3, 0(a0) # load the next number into t3
+    bge t3, t0, greater
+    j loop_start
+
+greater:
+    mv t2, t1 # assign greatest index to t2
+    mv t0, t3 # assign greatest value to t0
+    j loop_start
+
+done:
+    mv a0, t2
+    jr ra # return
 
 handle_error:
     li a0, 36
