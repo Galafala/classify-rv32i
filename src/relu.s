@@ -24,12 +24,22 @@
 # ==============================================================================
 relu:
     li t0, 1             
-    blt a1, t0, error     
+    blt a1, t0, error # handle empty array  
     li t1, 0             
 
 loop_start:
     # TODO: Add your own implementation
+    lw t2, 0(a0)
+    bge t2, zero, skip # if array >= 0, go to skip
+    li t2, 0
+    sw t2, 0(a0)
+skip:
+    addi a0, a0, 4
+    addi t1, t1, 1
+    blt t1, a1, loop_start
+
+    ret
 
 error:
     li a0, 36          
-    j exit          
+    j exit   
