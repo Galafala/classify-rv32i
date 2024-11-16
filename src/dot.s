@@ -1,4 +1,4 @@
-# .import my_mul.s
+.import my_mul.s
 .globl dot
 
 .text
@@ -32,57 +32,65 @@ dot:
     blt a2, t0, error_terminate  
     blt a3, t0, error_terminate
     blt a4, t0, error_terminate  
-      
+    
+    li t0, 0 # result of multiplication
     li t1, 0 # counter for loop
-    li t4, 0 # result of multiplication
+    li t5, 1
 
 loop_start:
     bge t1, a2, loop_end
     # TODO: Add your own implementation
+    addi t1, t1, 1
     lw t2, 0(a0) # load arr0[i]
     lw t3, 0(a1) # load arr1[i]
-    mv t5, a3 # counter for arr0
+
+arr0_stride:
+    mv t4, a3 # counter for arr0
+# loop for arr0 stride
 arr0_loop:  
     addi a0, a0, 4
-    addi t5, t5, -1
-    bge t5, t0, arr0_loop
-    mv t5, a4 # counter for arr1
+    addi t4, t4, -1
+    bge t4, t5, arr0_loop
+
+# loop for arr1 stride
+arr1_stride:
+    mv t4, a4 # counter for arr1
 arr1_loop:
     addi a1, a1, 4
-    addi t5, t5, -1
-    bge t5, t0, arr1_loop
-loop_last:
-    addi t1, t1, 1
+    addi t4, t4, -1
+    bge t4, t5, arr1_loop
 
-# multiplication
-#   mul t4, t2, t3
-# t4: result of multiplication
-my_mul:
-    addi sp, sp, -8
-    sw t2, 0(sp)
-    sw t3, 4(sp)
-    li t5, 0 # counter for loop
-    li t6, 31 # 32-bit integer
-mul_loop:
-    lw t2, 0(sp)
-    srl t3, t2, t5 # t6 = t2 >> t5; right shift t2 by t5
-    beqz t3, mul_exit # if t6 != 0, jump to mul_exit
-    andi t3, t3, 0x1 # t6 = t6 & 0x1; bitwise AND of t6 and 0x1
-    beqz t3, mul_last # if t6 != 0, jump to sum_add
-sum_add:
-    lw t3, 4(sp)
-    sll t3, t3, t5 
-    add t4, t4, t3
-mul_last:
-    addi t5, t5, 1
-    bge t5, t6, mul_exit # if t5 >= t6, jump to mul_exit
-    j mul_loop
-mul_exit:
-    addi sp, sp, 8
+loop_last:
+    addi sp, sp, -32
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw a3, 16(sp)
+    sw a4, 20(sp)
+    sw t1, 24(sp)
+    sw t5, 28(sp)
+
+    mv a0, t0
+    mv a1, t2
+    mv a2, t3
+
+    jal ra, my_mul
+    mv t0, a0
+
+    lw ra, 0(sp)
+    lw a0, 4(sp)
+    lw a1, 8(sp)
+    lw a2, 12(sp)
+    lw a3, 16(sp)
+    lw a4, 20(sp)
+    lw t1, 24(sp)
+    lw t5, 28(sp)
+    addi sp, sp, 32
     j loop_start
 
 loop_end:
-    mv a0, t4
+    mv a0, t0
     jr ra
 
 error_terminate:
