@@ -116,6 +116,25 @@ inner_loop_start:
     
 inner_loop_end:
     # TODO: Add your own implementation
+    addi s0, s0, 1      # Increment outer loop counter (row index in A)
+    li t0, 0
+offset_loop: # Compute offset to next row in A: t1 = columns of A * 4 bytes
+    beq t0, a2, outer_loop_start # If we have reached the end of the row, go to the next row
+    addi t0, t0, 1 # Increment inner loop counter (column index in A)
+    addi s3, s3, 4 # Move s3 to the start of the next row in A
+    j offset_loop
+
+outer_loop_end:
+    # Epilogue
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    lw s3, 16(sp)
+    lw s4, 20(sp)
+    lw s5, 24(sp)
+    addi sp, sp, 28
+    jr ra
 
 error:
     li a0, 38
