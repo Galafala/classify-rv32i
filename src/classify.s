@@ -1,3 +1,4 @@
+.import my_mul.s
 .globl classify
 
 .text
@@ -166,7 +167,40 @@ classify:
     
     lw t0, 0(s3)
     lw t1, 0(s8)
-    # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+
+    # mul a0, t0, t1 
+    # FIXME: Replace 'mul' with your own implementation
+    addi sp, sp, -44
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw a3, 16(sp)
+    sw a4, 20(sp)
+    sw a5, 24(sp)
+    sw a6, 28(sp)
+    sw t0, 32(sp)
+    sw t1, 36(sp)
+    sw t2, 40(sp)
+
+    li a0, 0
+    mv a1, t0
+    mv a2, t1
+    jal ra, my_mul
+
+    lw ra, 0(sp)
+    lw a1, 8(sp)
+    lw a2, 12(sp)
+    lw a3, 16(sp)
+    lw a4, 20(sp)
+    lw a5, 24(sp)
+    lw a6, 28(sp)
+    lw t0, 32(sp)
+    lw t1, 36(sp)
+    lw t2, 40(sp)
+    addi sp, sp, 44
+
+
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -203,8 +237,40 @@ classify:
     mv a0, s9 # move h to the first argument
     lw t0, 0(s3)
     lw t1, 0(s8)
+
     # mul a1, t0, t1 # length of h array and set it as second argument
     # FIXME: Replace 'mul' with your own implementation
+
+    addi sp, sp, -44
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw a3, 16(sp)
+    sw a4, 20(sp)
+    sw a5, 24(sp)
+    sw a6, 28(sp)
+    sw t0, 32(sp)
+    sw t1, 36(sp)
+    sw t2, 40(sp)
+
+    li a0, 0
+    mv a1, t0
+    mv a2, t1
+    jal ra, my_mul
+    mv a1, a0
+
+    lw ra, 0(sp)
+    lw a0, 4(sp)
+    lw a2, 12(sp)
+    lw a3, 16(sp)
+    lw a4, 20(sp)
+    lw a5, 24(sp)
+    lw a6, 28(sp)
+    lw t0, 32(sp)
+    lw t1, 36(sp)
+    lw t2, 40(sp)
+    addi sp, sp, 44
     
     jal relu
     
@@ -226,7 +292,40 @@ classify:
     
     lw t0, 0(s3)
     lw t1, 0(s6)
-    # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+
+    # mul a0, t0, t1 
+    # FIXME: Replace 'mul' with your own implementation
+
+    addi sp, sp, -44
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw a3, 16(sp)
+    sw a4, 20(sp)
+    sw a5, 24(sp)
+    sw a6, 28(sp)
+    sw t0, 32(sp)
+    sw t1, 36(sp)
+    sw t2, 40(sp)
+
+    li a0, 0
+    mv a1, t0
+    mv a2, t1
+    jal ra, my_mul
+
+    lw ra, 0(sp)
+    lw a1, 8(sp)
+    lw a2, 12(sp)
+    lw a3, 16(sp)
+    lw a4, 20(sp)
+    lw a5, 24(sp)
+    lw a6, 28(sp)
+    lw t0, 32(sp)
+    lw t1, 36(sp)
+    lw t2, 40(sp)
+    addi sp, sp, 44
+
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -286,8 +385,40 @@ classify:
     mv a0, s10 # load o array into first arg
     lw t0, 0(s3)
     lw t1, 0(s6)
-    mul a1, t0, t1 # load length of array into second arg
+
+    # mul a1, t0, t1 # load length of array into second arg
     # FIXME: Replace 'mul' with your own implementation
+
+    addi sp, sp, -44
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw a3, 16(sp)
+    sw a4, 20(sp)
+    sw a5, 24(sp)
+    sw a6, 28(sp)
+    sw t0, 32(sp)
+    sw t1, 36(sp)
+    sw t2, 40(sp)
+
+    li a0, 0
+    mv a1, t0
+    mv a2, t1
+    jal ra, my_mul
+    mv a1, a0
+
+    lw ra, 0(sp)
+    lw a0, 4(sp)
+    lw a2, 12(sp)
+    lw a3, 16(sp)
+    lw a4, 20(sp)
+    lw a5, 24(sp)
+    lw a6, 28(sp)
+    lw t0, 32(sp)
+    lw t1, 36(sp)
+    lw t2, 40(sp)
+    addi sp, sp, 44
     
     jal argmax
     
