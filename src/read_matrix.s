@@ -1,3 +1,4 @@
+.import my_mul.s
 .globl read_matrix
 
 .text
@@ -76,6 +77,30 @@ read_matrix:
 
     # mul s1, t1, t2   # s1 is number of elements
     # FIXME: Replace 'mul' with your own implementation
+
+    # Save registers before calling my_mul
+    addi sp, sp, -24
+    sw ra, 0(sp)
+    sw a0, 4(sp)
+    sw a1, 8(sp)
+    sw a2, 12(sp)
+    sw t0, 16(sp)
+    sw t1, 20(sp)
+
+    li a0, 0
+    mv a1, t1
+    mv a2, t2
+    jal ra, my_mul
+    mv s1, a0
+
+    # Restore registers after calling my_mul
+    lw ra, 0(sp)
+    lw a0, 4(sp)
+    lw a1, 8(sp)
+    lw a2, 12(sp)
+    lw t0, 16(sp)
+    lw t1, 20(sp)
+    addi sp, sp, 24
 
     slli t3, s1, 2
     sw t3, 24(sp)    # size in bytes
