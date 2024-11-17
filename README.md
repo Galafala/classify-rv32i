@@ -10,16 +10,19 @@ I implemented a custom multiplication function named my_mul, located in the my_m
 
 The function take three arguments as inputs, a0, a1, and a2. a0 is for holding the initial result values. a1 and a2 are values for multiplication.
 
-For example:
+- sudo code:
 
 ```sudo=
+a0 := result
 a1 := multiplicand
 a2 := multiplier
 
 while (a1 != 0):
   if (a1 >> 1) & 1:
-    result += a2 << 1
+    a0 += a2 << 1
 ```
+
+- asm code:
 
 ```asm=
 my_mul:
