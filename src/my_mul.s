@@ -3,7 +3,7 @@
 .text
 my_mul:
     li t1, 0 # counter for loop
-    li t2, 31 # 32-bit integer
+    li t2, 32 # 32-bit integer
     blt a1, a2, loop # if a1 < a2, jump to loop
     mv t0, a2 # t0 = a0
     mv a2, a1 # a0 = a1
