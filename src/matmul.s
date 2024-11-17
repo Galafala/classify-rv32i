@@ -116,7 +116,7 @@ inner_loop_start:
     
 inner_loop_end:
     # TODO: Add your own implementation
-    addi s0, s0, 1      # Increment outer loop counter (row index in A)
+    addi s0, s0, 1      # Increment outer loop counter (row index in B)
     li t0, 0
 offset_loop: # Compute offset to next row in A: t1 = columns of A * 4 bytes
     beq t0, a2, outer_loop_start # If we have reached the end of the row, go to the next row
