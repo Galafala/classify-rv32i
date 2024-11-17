@@ -74,7 +74,6 @@ loop_last:
     mv a0, t0
     mv a1, t2
     mv a2, t3
-
     jal ra, my_mul
     mv t0, a0
 
