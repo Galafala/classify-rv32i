@@ -2,23 +2,19 @@
 
 .text
 my_mul:
-    li t1, 0 # counter for loop
-    li t2, 32 # 32-bit integer
     blt a1, a2, loop # if a1 < a2, jump to loop
-    mv t0, a2 # t0 = a0
-    mv a2, a1 # a0 = a1
-    mv a1, t0 # a1 = t0
+    mv t0, a2 # t0 = a2
+    mv a2, a1 # a2 = a1
+    mv a1, t0 # a1 = t2
 loop:
-    beq t1, t2, exit # if t1 >= t2, jump to mul_exit
-    srl t0, a1, t1 # t0 = a0 >> t1; right shift t1 by t1
-    beqz t0, exit # if t0 != 0, jump to mul_exit
-    andi t0, t0, 0x1 # t0 = t0 & 0x1; bitwise AND of t2 and 0x1
-    beqz t0, last_step # if t0 != 0, run sum
-sum:
-    sll t0, a2, t1 
-    add a0, a0, t0 
+    beqz a1, exit # if a2 == 0, jump to exit
+    andi t0, a1, 0x1 # t0 = t0 & 0x1; bitwise AND of t2 and 0x1
+    beqz t0, last_step # if t0 == 0, jump to last_step
+    add a0, a0, a2
 last_step:
-    addi t1, t1, 1
+    srli a1, a1, 1 # a1 = a1 >> 1; right shift 1 by 1
+    slli a2, a2, 1 # a2 = a2 << 1; left shift a2 by 1
     j loop
 exit:
     jr ra
+    
